@@ -392,3 +392,23 @@ describe 'MinMaxStackQueue' do
     end
   end
 end
+
+describe '#max_window_range' do
+  subject(:arr) { [1, 0, 2, 5, 4, 8] }
+
+  it 'chooses the max difference using a 2 element window' do
+    expect(max_window_range(arr, 2)).to eq(4)
+  end
+
+  it 'chooses the max difference using a 3 element window' do
+    expect(max_window_range(arr, 3)).to eq(5)
+  end
+
+  it 'chooses the max difference using a 4 element window' do
+    expect(max_window_range(arr, 4)).to eq(6)
+  end
+
+  it 'chooses the max difference using a 5 element window' do
+    expect(max_window_range([1, 3, 2, 5, 4, 8], 5)).to eq(6)
+  end
+end
