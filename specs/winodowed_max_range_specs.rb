@@ -13,6 +13,10 @@ end
 class StackQueue
   attr_reader :store
 end
+
+class MinMaxStack
+  attr_reader :store
+end
 ## End testing class extensions
 
 describe '#max_windowed_range' do
@@ -145,6 +149,34 @@ describe 'MyStack' do
       expect(stack.empty?).to be(true)
     end
   end
+
+  describe '#min' do
+    it 'returns the lowest valued item in store' do
+      add_items
+      expect(stack.min).to eq(0)
+    end
+
+    it 'returns correct lowest valued item after items have been removed' do
+      add_items
+      stack.push(-100)
+      stack.pop
+      expect(stack.min).to eq(0)
+    end
+  end
+
+  describe '#max' do
+    it 'returns the highest valued item in store' do
+      add_items
+      expect(stack.max).to eq(2)
+    end
+
+    it 'returns correct highest valued item after items have been removed' do
+      add_items
+      stack.push(100)
+      stack.pop
+      expect(stack.max).to eq(2)
+    end
+  end
 end
 
 describe 'StackQueue' do
@@ -192,6 +224,90 @@ describe 'StackQueue' do
 
     it 'returns true when queue-stack is empty' do
       expect(hybrid.empty?).to be(true)
+    end
+  end
+end
+
+describe 'MinMaxStack' do
+  subject(:stack) { MinMaxStack.new }
+  def add_items
+    stack.push(0)
+    stack.push(1)
+    stack.push(2)
+  end
+
+  describe '#initialize' do
+    it 'creates an instance of MyStack called store' do
+      expect(stack.store).to be_an_instance_of(MyStack)
+    end
+  end
+
+  describe '#push' do
+    it 'adds items to store in order from first to last' do
+      add_items
+      expect(stack.store.store).to eq([0, 1, 2])
+    end
+  end
+
+  describe '#pop' do
+    it 'removes an item from the end of store and returns it (FILO)' do
+      add_items
+      expect(stack.pop).to eq(2)
+      expect(stack.store.store).to eq([0, 1])
+    end
+  end
+
+  describe '#peek' do
+    it 'returns the last item of store without removing it' do
+      add_items
+      expect(stack.peek).to eq(2)
+      expect(stack.store.store).to eq([0, 1, 2])
+    end
+  end
+
+  describe '#size' do
+    it 'returns the size of store' do
+      add_items
+      expect(stack.size).to eq(3)
+    end
+  end
+
+  describe '#empty?' do
+    it 'returns false when store contains items' do
+      add_items
+      expect(stack.empty?).to be(false)
+    end
+
+    it 'returns true when store is empty' do
+      expect(stack.empty?).to be(true)
+    end
+  end
+
+  describe '#min' do
+    it 'returns the lowest valued item in store' do
+      add_items
+      expect(stack.min).to eq(0)
+    end
+
+    it 'returns correct lowest valued item after items have been removed' do
+      add_items
+      stack.push(-100)
+      stack.pop
+      expect(stack.min).to eq(0)
+    end
+  end
+
+  describe '#max' do
+    it 'returns the highest valued item in store' do
+      add_items
+      expect(stack.max).to eq(2)
+    end
+
+    it 'returns correct highest valued item after items have been removed' do
+      add_items
+      stack.push(100)
+      stack.pop
+      expect(stack.max).to eq(2)
     end
   end
 end
