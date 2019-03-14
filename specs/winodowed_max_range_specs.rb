@@ -17,6 +17,10 @@ end
 class MinMaxStack
   attr_reader :store
 end
+
+class MinMaxStackQueue
+  attr_reader :store
+end
 ## End testing class extensions
 
 describe '#max_windowed_range' do
@@ -308,6 +312,83 @@ describe 'MinMaxStack' do
       stack.push(100)
       stack.pop
       expect(stack.max).to eq(2)
+    end
+  end
+end
+
+describe 'MinMaxStackQueue' do
+  subject(:hybrid) { MinMaxStackQueue.new }
+
+  def add_items
+    hybrid.enqueue(0)
+    hybrid.enqueue(1)
+    hybrid.enqueue(2)
+  end
+
+  describe '#initialize' do
+    it 'creates an instance of MinMaxStack in store' do
+      expect(hybrid.store).to be_an_instance_of(MinMaxStack)
+    end
+  end
+
+  describe '#enqueue' do
+    it 'adds items in reverse order, e.g. adding 0 > 1 > 2 makes [2, 1, 0]' do
+      add_items
+      expect(hybrid.store.store.store).to eq([2, 1, 0])
+    end
+  end
+
+  describe '#dequeue' do
+    it 'removes the first item that was added and returns it' do
+      add_items
+      expect(hybrid.dequeue).to eq(0)
+      expect(hybrid.store.store.store).to eq([2, 1])
+    end
+  end
+
+  describe '#size' do
+    it 'returns the numbers of items stored in the queue-stack' do
+      add_items
+      expect(hybrid.size).to eq(3)
+    end
+  end
+
+  describe '#empty?' do
+    it 'returns false when queue-stack contains items' do
+      add_items
+      expect(hybrid.empty?).to be(false)
+    end
+
+    it 'returns true when queue-stack is empty' do
+      expect(hybrid.empty?).to be(true)
+    end
+  end
+
+  describe '#min' do
+    it 'returns the lowest valued item in store' do
+      add_items
+      expect(hybrid.min).to eq(0)
+    end
+
+    it 'returns correct lowest valued item after items have been removed' do
+      add_items
+      hybrid.enqueue(-100)
+      hybrid.dequeue
+      expect(hybrid.min).to eq(-100)
+    end
+  end
+
+  describe '#max' do
+    it 'returns the highest valued item in store' do
+      add_items
+      expect(hybrid.max).to eq(2)
+    end
+
+    it 'returns correct highest valued item after items have been removed' do
+      add_items
+      hybrid.enqueue(100)
+      hybrid.dequeue
+      expect(hybrid.max).to eq(100)
     end
   end
 end
