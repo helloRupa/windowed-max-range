@@ -179,3 +179,19 @@ class MinMaxStackQueue
     @store.pop
   end
 end
+
+# Time complexity is O(n): Linear
+def max_window_range(arr, window)
+  queue = MinMaxStackQueue.new
+  curr_max = nil
+
+  until arr.empty?
+    queue.enqueue(arr.shift)
+    next if queue.size < window
+    range = queue.max - queue.min
+    curr_max = range if curr_max.nil? || range > curr_max
+    queue.dequeue
+  end
+
+  curr_max
+end
